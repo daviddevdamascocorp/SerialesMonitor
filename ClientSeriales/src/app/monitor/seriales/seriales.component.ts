@@ -152,11 +152,12 @@ export class SerialesComponent implements OnInit {
     const { sku, serial, almacen } = this.formSeriales.value;
 
     if(sku && serial){
+      this.loaderService.loadingOn()
       let data = {
         sku:sku,
         serial:serial
       }
-      this.loaderService.loadingOn()
+     
       this.monitorService.postProductosSerialesSkuSerialConocido(data).subscribe(results=>{
         this.TablaSeriales = new MatTableDataSource(results)
         this.TablaSeriales.paginator = this.paginator
@@ -174,8 +175,9 @@ export class SerialesComponent implements OnInit {
         this.TablaSeriales = new MatTableDataSource(results)
         this.TablaSeriales.paginator = this.paginator
         this.TablaSeriales.sort = this.sort
+        this.loaderService.loadingOff()
       })
-      this.loaderService.loadingOff()
+  
     }else if (sku && almacen){
       this.loaderService.loadingOn()
       let data = {
@@ -187,8 +189,9 @@ export class SerialesComponent implements OnInit {
         this.TablaSeriales = new MatTableDataSource(results)
         this.TablaSeriales.paginator = this.paginator
         this.TablaSeriales.sort = this.sort
+        this.loaderService.loadingOff()
       })
-      this.loaderService.loadingOff()
+     
     }else{
       alert("Escoge un almacen o un serial")
       this.loaderService.loadingOff()
