@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\ConsultaSerialesDamasco.Server.props" />
+</Project>

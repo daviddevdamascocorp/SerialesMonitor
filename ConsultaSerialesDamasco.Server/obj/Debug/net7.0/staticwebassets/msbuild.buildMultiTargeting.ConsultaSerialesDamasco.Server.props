@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\ConsultaSerialesDamasco.Server.props" />
+</Project>
