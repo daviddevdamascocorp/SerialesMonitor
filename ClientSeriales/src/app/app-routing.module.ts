@@ -3,10 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { SerialesComponent } from './monitor/seriales/seriales.component';
 
 const routes: Routes = [
-  { path: 'monitor', component: SerialesComponent },
+  { path: 'consulta-seriales', component: SerialesComponent },
   {
     path: '',
-    redirectTo: 'monitor',
+    redirectTo: 'consulta-seriales',
     pathMatch: 'full'
   }
 ];

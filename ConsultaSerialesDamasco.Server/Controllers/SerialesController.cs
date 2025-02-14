@@ -128,6 +128,7 @@ namespace ConsultaSerialesDamasco.Server.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter(command);
             command.Parameters.AddWithValue("@SerialProd", consulta.Serial);
             System.Data.DataTable dataTable = new System.Data.DataTable();
+            command.CommandTimeout = 3600;
             _connectionDamasco.Open();
             adapter.Fill(dataTable);
             _connectionDamasco.Close();
@@ -141,6 +142,7 @@ namespace ConsultaSerialesDamasco.Server.Controllers
                 NumberMovement = Convert.ToInt32(item["LineNum"]),
                 WarehouseId = Convert.ToString(item["WhsCode"]),
                 WarehouseName = Convert.ToString(item["Sucursal"]),
+                PriceSku = Convert.ToDouble(item["PRECIO"]),
                 TypeMovement = Convert.ToString(item["TipoDeDocumento"])
                });
             }
@@ -159,6 +161,7 @@ namespace ConsultaSerialesDamasco.Server.Controllers
             command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@SkuProd", consulta.Sku);
             command.Parameters.AddWithValue("@serialId", consulta.Serial);
+            command.CommandTimeout = 3600;
             _connectionDamasco.Open();
             adapter.Fill(dataTable);
             _connectionDamasco.Close();
@@ -172,6 +175,7 @@ namespace ConsultaSerialesDamasco.Server.Controllers
                     ProductName = Convert.ToString(item["Descrip"]),
                     NumberMovement = Convert.ToInt32(item["LineNum"]),
                     WarehouseId = Convert.ToString(item["WhsCode"]),
+                    PriceSku = Convert.ToDouble(item["PRECIO"]),
                     WarehouseName = Convert.ToString(item["Sucursal"]),
                     TypeMovement = Convert.ToString(item["TipoDeDocumento"])
                 });
@@ -204,6 +208,7 @@ namespace ConsultaSerialesDamasco.Server.Controllers
                     ProductSku = Convert.ToString(item["Sku"]),
                     ProductName = Convert.ToString(item["Descrip"]),
                     NumberMovement = Convert.ToInt32(item["LineNum"]),
+                    PriceSku = Convert.ToDouble(item["PRECIO"]),
                     WarehouseId = Convert.ToString(item["WhsCode"]),
                     WarehouseName = Convert.ToString(item["Sucursal"]),
                     TypeMovement = Convert.ToString(item["TipoDeDocumento"])
@@ -225,7 +230,7 @@ namespace ConsultaSerialesDamasco.Server.Controllers
             command.Parameters.AddWithValue("@SkuProd", consulta.Sku);
            
             command.Parameters.AddWithValue("@whsCode", consulta.Almacen);
-            command.CommandTimeout = 500;
+            command.CommandTimeout = 3600;
             
             _connectionDamasco.Open();
             adapter.Fill(dataTable);
@@ -239,6 +244,7 @@ namespace ConsultaSerialesDamasco.Server.Controllers
                     ProductSku = Convert.ToString(item["Sku"]),
                     ProductName = Convert.ToString(item["Descrip"]),
                     NumberMovement = Convert.ToInt32(item["LineNum"]),
+                    PriceSku = Convert.ToDouble(item["PRECIO"]),
                     WarehouseId = Convert.ToString(item["WhsCode"]),
                     WarehouseName = Convert.ToString(item["Sucursal"]),
                     TypeMovement = Convert.ToString(item["TipoDeDocumento"])
@@ -270,6 +276,7 @@ namespace ConsultaSerialesDamasco.Server.Controllers
                     ProductSku = Convert.ToString(item["Sku"]),
                     ProductName = Convert.ToString(item["Descrip"]),
                     NumberMovement = Convert.ToInt32(item["LineNum"]),
+                    PriceSku = Convert.ToDouble(item["PRECIO"]),
                     WarehouseId = Convert.ToString(item["WhsCode"]),
                     WarehouseName = Convert.ToString(item["Sucursal"]),
                     TypeMovement = Convert.ToString(item["TipoDeDocumento"])

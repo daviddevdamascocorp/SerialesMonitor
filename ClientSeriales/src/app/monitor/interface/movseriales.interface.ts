@@ -6,5 +6,6 @@ export interface MovimientoSeriales{
     numberMovement: number;
     warehouseId:    string;
     warehouseName:  string;
-    typeMovement:   string;
+  typeMovement: string;
+  priceSku: number;
 }

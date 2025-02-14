@@ -8,6 +8,7 @@
         public string ProductName { get; set; }
         public int NumberMovement { get; set; }
       
+        public double PriceSku { get; set; }
 
         public string WarehouseId { get; set; }
 

@@ -35,10 +35,10 @@ export class SerialesComponent implements OnInit,AfterViewInit {
   productosGroupOption:Observable<Productos[]> | undefined
   almacenesGroupOption!:Observable<Almacen[]> | undefined
   public TablaSeriales!:MatTableDataSource<MovimientoSeriales>
-  public displayedColumns: string[] = [ "dateSerial","serialNumber", "productSku","productName","numberMovement", 
+  public displayedColumns: string[] = [ "dateSerial","serialNumber", "productSku","priceSku","productName","numberMovement", 
     "warehouseId",  "warehouseName", "typeMovement"]
   matcher = new MyErrorStateMatcher();
-  private excelColumns:String[] = ['Sku','Descripción','Serial','N° Movimiento','Tipo movimiento','Fecha','Almacén','Nombre almacén']
+  private excelColumns:String[] = ['Sku','Descripción','Precio','Serial','N° Movimiento','Tipo movimiento','Fecha','Almacén','Nombre almacén']
   formSeriales : FormGroup;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
@@ -260,7 +260,7 @@ export class SerialesComponent implements OnInit,AfterViewInit {
     const woorkSheet = workBook.addWorksheet(sheetName)
     woorkSheet.addRow(this.excelColumns)
     this.TablaSeriales.data.forEach(element => {
-      woorkSheet.addRow([element.productSku,element.productName,element.serialNumber,element.numberMovement,
+      woorkSheet.addRow([element.productSku,element.productName,element.priceSku,element.serialNumber,element.numberMovement,
         element.typeMovement,element.dateSerial,element.warehouseId,element.warehouseName])
     });
 
