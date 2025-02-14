@@ -36,4 +36,11 @@ export class MonitorService {
   postProductosSerialesSkuAlmacenSerial(skuBody:any):Observable<MovimientoSeriales[]>{
     return this.httpClient.post<MovimientoSeriales[]>(`${this.baseUrl}/api/seriales/sku-almacen-serial`,skuBody)
   }
+
+  postProductosSoloSeriales(skuBody:any):Observable<MovimientoSeriales[]>{
+    return this.httpClient.post<MovimientoSeriales[]>(`${this.baseUrl}/api/seriales/por-serial`,skuBody)
+  }
+  postProductosSoloSerialesAlmacen(skuBody:any):Observable<MovimientoSeriales[]>{
+    return this.httpClient.post<MovimientoSeriales[]>(`${this.baseUrl}/api/seriales/serial-almacen`,skuBody)
+  }
 }

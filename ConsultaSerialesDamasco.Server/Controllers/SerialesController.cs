@@ -29,7 +29,9 @@ namespace ConsultaSerialesDamasco.Server.Controllers
             List<WarehouseModel> whs = new List<WarehouseModel>();
             connection();
         
-            SqlCommand command = new SqlCommand("select WhsCode,WhsName from OWHS where WhsName NOT LIKE '%(Inactivo)%'",_connectionDamasco);
+            SqlCommand command = new SqlCommand("select * from OWHS where WhsName    NOT LIKE '%(Inactivo)%' and ( WhsName LIKE '%Principal%' or WhsName LIKE '%Defectuoso%' or " +
+                "WhsName LIKE '%Transito%' or WhsName LIKE '%Outlet%' or WhsName LIKE '%Oulet%' " +
+                "or WhsName LIKE '%Detalle%' or WhsName LIKE '%Defectos%'  or WhsName LIKE '%EXHIBICION%'  or WhsName LIKE '%GENERAL%') ", _connectionDamasco);
             SqlDataAdapter adapter = new SqlDataAdapter(command);
             System.Data.DataTable dataTable = new System.Data.DataTable();
             _connectionDamasco.Open();
@@ -116,15 +118,15 @@ namespace ConsultaSerialesDamasco.Server.Controllers
             return Ok(itemsSerial);
         }
 
-        [HttpPost("seriales-sku")]
-        public IActionResult ConsultaSerialesSKu(ConsultaModel consulta) {
+        [HttpPost("por-serial")]
+        public IActionResult ConsultaSeriales(ConsultaModel consulta) {
             List<SerialesModel> seriales = new List<SerialesModel>();
             connection();
             
-            SqlCommand command = new SqlCommand("GetSerialesMovimientoSku", _connectionDamasco);
+            SqlCommand command = new SqlCommand("GetSerialesMovimientoSerial", _connectionDamasco);
             command.CommandType = System.Data.CommandType.StoredProcedure;
             SqlDataAdapter adapter = new SqlDataAdapter(command);
-            command.Parameters.AddWithValue("@SkuProd", consulta.Sku);
+            command.Parameters.AddWithValue("@SerialProd", consulta.Serial);
             System.Data.DataTable dataTable = new System.Data.DataTable();
             _connectionDamasco.Open();
             adapter.Fill(dataTable);
@@ -223,6 +225,8 @@ namespace ConsultaSerialesDamasco.Server.Controllers
             command.Parameters.AddWithValue("@SkuProd", consulta.Sku);
            
             command.Parameters.AddWithValue("@whsCode", consulta.Almacen);
+            command.CommandTimeout = 500;
+            
             _connectionDamasco.Open();
             adapter.Fill(dataTable);
             _connectionDamasco.Close();
@@ -243,6 +247,38 @@ namespace ConsultaSerialesDamasco.Server.Controllers
             return Ok(seriales);
         }
 
+        [HttpPost("serial-almacen")]
+        public IActionResult ConsultaSerialesConSerialAndAlmacen(ConsultaModel consulta)
+        {
+            List<SerialesModel> seriales = new List<SerialesModel>();
+            connection();
+            SqlCommand command = new SqlCommand("GetSerialesMovimientoSerialAndAlmacen", _connectionDamasco);
+            System.Data.DataTable dataTable = new System.Data.DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter(command);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@whsCode", consulta.Almacen);
+            command.Parameters.AddWithValue("@serialId", consulta.Serial);
+            _connectionDamasco.Open();
+            adapter.Fill(dataTable);
+            _connectionDamasco.Close();
+            foreach (DataRow item in dataTable.Rows)
+            {
+                seriales.Add(new SerialesModel
+                {
+                    SerialNumber = Convert.ToString(item["SerialSku"]),
+                    DateSerial = Convert.ToDateTime(item["FechaMov"]),
+                    ProductSku = Convert.ToString(item["Sku"]),
+                    ProductName = Convert.ToString(item["Descrip"]),
+                    NumberMovement = Convert.ToInt32(item["LineNum"]),
+                    WarehouseId = Convert.ToString(item["WhsCode"]),
+                    WarehouseName = Convert.ToString(item["Sucursal"]),
+                    TypeMovement = Convert.ToString(item["TipoDeDocumento"])
+                });
+            }
+            return Ok(seriales);
+        }
+
+        //consulto por serial y almacen
 
 
 

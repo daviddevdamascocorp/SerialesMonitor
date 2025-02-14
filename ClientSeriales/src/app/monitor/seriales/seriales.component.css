@@ -4,3 +4,7 @@
     max-height: 400px;
     overflow: auto;
   }
+
+  th.mat-sort-header-sorted {
+    color: black;
+  }
