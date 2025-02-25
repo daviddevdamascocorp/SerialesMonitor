@@ -297,8 +297,9 @@ namespace ConsultaSerialesDamasco.Server.Controllers
                     WarehouseName = Convert.ToString(item["Sucursal"]),
                     TypeMovement = Convert.ToString(item["TipoDeDocumento"])
                 });
-                _connectionDamasco.Close();
+                
             }
+            _connectionDamasco.Close();
             return Ok(seriales);
         }
 
