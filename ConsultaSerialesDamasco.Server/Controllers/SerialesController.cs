@@ -131,9 +131,20 @@ namespace ConsultaSerialesDamasco.Server.Controllers
             command.CommandTimeout = 3600;
             _connectionDamasco.Open();
             adapter.Fill(dataTable);
-            _connectionDamasco.Close();
+           
             foreach (DataRow item in dataTable.Rows) 
             {
+                var precio = 0.0;
+                var ProductSku = Convert.ToString(item["Sku"]);
+                var ProductSkuPriceSQl = new SqlCommand("select PriceList from ITM1 where ItemCode = @itemCode", _connectionDamasco);
+                ProductSkuPriceSQl.Parameters.AddWithValue("@itemCode", ProductSku);
+                using (var reader = ProductSkuPriceSQl.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        precio = Convert.ToDouble(reader["PriceList"]);
+                    }
+                }
                 seriales.Add(new SerialesModel {
                 SerialNumber = Convert.ToString(item["SerialSku"]),
                 DateSerial = Convert.ToDateTime(item["FechaMov"]),
@@ -142,11 +153,12 @@ namespace ConsultaSerialesDamasco.Server.Controllers
                 NumberMovement = Convert.ToInt32(item["LineNum"]),
                 WarehouseId = Convert.ToString(item["WhsCode"]),
                 WarehouseName = Convert.ToString(item["Sucursal"]),
-                PriceSku = Convert.ToDouble(item["PRECIO"]),
+                PriceSku = precio,
                 TypeMovement = Convert.ToString(item["TipoDeDocumento"])
                });
             }
-                return Ok(seriales);
+            _connectionDamasco.Close();
+            return Ok(seriales);
 
         }
         //consulto por sku y serial
@@ -167,6 +179,17 @@ namespace ConsultaSerialesDamasco.Server.Controllers
             _connectionDamasco.Close();
             foreach (DataRow item in dataTable.Rows)
             {
+                var precio = 0.0;
+                var ProductSku = Convert.ToString(item["Sku"]);
+                var ProductSkuPriceSQl = new SqlCommand("select PriceList from ITM1 where ItemCode = @itemCode", _connectionDamasco);
+                ProductSkuPriceSQl.Parameters.AddWithValue("@itemCode", ProductSku);
+                using (var reader = ProductSkuPriceSQl.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        precio = Convert.ToDouble(reader["PriceList"]);
+                    }
+                }
                 seriales.Add(new SerialesModel
                 {
                     SerialNumber = Convert.ToString(item["SerialSku"]),
@@ -201,14 +224,26 @@ namespace ConsultaSerialesDamasco.Server.Controllers
             _connectionDamasco.Close();
             foreach (DataRow item in dataTable.Rows)
             {
-                seriales.Add(new SerialesModel
+                var precio = 0.0;
+                var ProductSku = Convert.ToString(item["Sku"]);
+                var ProductSkuPriceSQl = new SqlCommand("select PriceList from ITM1 where ItemCode = @itemCode", _connectionDamasco);
+                ProductSkuPriceSQl.Parameters.AddWithValue("@itemCode", ProductSku);
+                using (var reader = ProductSkuPriceSQl.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        precio = Convert.ToDouble(reader["PriceList"]);
+                    }
+                }
+             
+                    seriales.Add(new SerialesModel
                 {
                     SerialNumber = Convert.ToString(item["SerialSku"]),
                     DateSerial = Convert.ToDateTime(item["FechaMov"]),
                     ProductSku = Convert.ToString(item["Sku"]),
                     ProductName = Convert.ToString(item["Descrip"]),
                     NumberMovement = Convert.ToInt32(item["LineNum"]),
-                    PriceSku = Convert.ToDouble(item["PRECIO"]),
+                    PriceSku = precio,
                     WarehouseId = Convert.ToString(item["WhsCode"]),
                     WarehouseName = Convert.ToString(item["Sucursal"]),
                     TypeMovement = Convert.ToString(item["TipoDeDocumento"])
@@ -237,6 +272,17 @@ namespace ConsultaSerialesDamasco.Server.Controllers
             _connectionDamasco.Close();
             foreach (DataRow item in dataTable.Rows)
             {
+                var precio = 0.0;
+                var ProductSku = Convert.ToString(item["Sku"]);
+                var ProductSkuPriceSQl = new SqlCommand("select PriceList from ITM1 where ItemCode = @itemCode", _connectionDamasco);
+                ProductSkuPriceSQl.Parameters.AddWithValue("@itemCode", ProductSku);
+                using (var reader = ProductSkuPriceSQl.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        precio = Convert.ToDouble(reader["PriceList"]);
+                    }
+                }
                 seriales.Add(new SerialesModel
                 {
                     SerialNumber = Convert.ToString(item["SerialSku"]),
