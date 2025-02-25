@@ -271,7 +271,7 @@ namespace ConsultaSerialesDamasco.Server.Controllers
             
             _connectionDamasco.Open();
             adapter.Fill(dataTable);
-            _connectionDamasco.Close();
+           
             foreach (DataRow item in dataTable.Rows)
             {
                 var precio = 0.0;
@@ -297,6 +297,7 @@ namespace ConsultaSerialesDamasco.Server.Controllers
                     WarehouseName = Convert.ToString(item["Sucursal"]),
                     TypeMovement = Convert.ToString(item["TipoDeDocumento"])
                 });
+                _connectionDamasco.Close();
             }
             return Ok(seriales);
         }
@@ -314,7 +315,7 @@ namespace ConsultaSerialesDamasco.Server.Controllers
             command.Parameters.AddWithValue("@serialId", consulta.Serial);
             _connectionDamasco.Open();
             adapter.Fill(dataTable);
-            _connectionDamasco.Close();
+           
             foreach (DataRow item in dataTable.Rows)
             {
                 var precio = 0.0;
@@ -342,6 +343,7 @@ namespace ConsultaSerialesDamasco.Server.Controllers
                 });
             }
             return Ok(seriales);
+            _connectionDamasco.Close();
         }
 
         //consulto por serial y almacen
