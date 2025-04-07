@@ -352,6 +352,42 @@ namespace ConsultaSerialesDamasco.Server.Controllers
 
 
 
+        [HttpPost("seriales-disponibles")]
+        public IActionResult ConsultaSerialesDisponibles(ConsultaModel consulta)
+        {
+            List<AvailableSerialModel> serialesDisponibles = new List<AvailableSerialModel>();
+            connection();
+            var ProductAvailableSerialQuery =  new SqlCommand("Select Distinct(OSRN.ItemCode),  OSRN.itemName,OSRN.DistNumber, OSRQ.WhsCode, OSRQ.Quantity ,WhsName From OSRN inner join OSRQ " +
+                "On OSRN.ItemCode = OSRQ.ItemCode And OSRN.SysNumber = OSRQ.SysNumber Inner Join OWHS on " +
+                "OWHS.WhsCode = OSRQ.WhsCode where OSRQ.WhsCode=@whsCode   " +
+                "and osrq.ItemCode=@SkuProd  AND OSRQ.Quantity!='0' " +
+                "Order By OSRN.ItemCode", _connectionDamasco);
+            ProductAvailableSerialQuery.Parameters.AddWithValue("@SkuProd", consulta.Sku);
+            ProductAvailableSerialQuery.Parameters.AddWithValue("@whsCode", consulta.Almacen);
+            System.Data.DataTable dataTable = new System.Data.DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter(ProductAvailableSerialQuery);
+            _connectionDamasco.Open();
+            adapter.Fill(dataTable);
+            foreach (DataRow item in dataTable.Rows)
+            {
 
+                serialesDisponibles.Add(new AvailableSerialModel
+                {
+                    ItemCode = Convert.ToString(item["ItemCode"]),
+                    ItemName = Convert.ToString(item["itemName"]),
+                    WarehouseCode = Convert.ToString(item["WhsCode"]),
+                    WarehouseName = Convert.ToString(item["WhsName"]),
+                    SerialNumber = Convert.ToString(item["DistNumber"]),
+                    QuantityProduct = Convert.ToInt32(item["Quantity"])
+                    
+
+                });
+            
+            
+            }
+            return Ok(serialesDisponibles);
+            }
     }
+
+  
 }

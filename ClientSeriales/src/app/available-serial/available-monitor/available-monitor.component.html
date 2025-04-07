@@ -1,0 +1,96 @@
+<div class="general">
+    <div class="grid p-3">
+        <div class="col-12">
+            <form [formGroup]="formSeriales" class="grid">
+                <mat-form-field class="col-12 sm:col-6">
+                    <mat-label>SKU </mat-label>
+                    <input type="text"
+                    placeholder="Proucto"
+                    aria-label="SKU"
+                    matInput
+                    formControlName="sku"
+                    [matAutocomplete]="sku"
+                    (input)="filterProduct()" (focus)="filterProduct()"
+                    >
+             <mat-autocomplete autoActiveFirstOption #sku="matAutocomplete">
+               @for (producto of productosGroupOption | async | slice:0:10; track producto) {
+                 <mat-option [value]="producto.productSku" >{{producto.productName }}-{{producto.productSku}}</mat-option>
+               }
+             </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field class="col-12 sm:col-6">
+                <mat-label>Almacenes</mat-label>
+                <input type="text"
+                placeholder="Almacén"
+                aria-label="Almacenes"
+                matInput
+                min-length="2"
+                formControlName="almacen"
+                [matAutocomplete]="almacen"  (input)="filterAlmacen()" (focus)="filterAlmacen()">
+         <mat-autocomplete autoActiveFirstOption #almacen="matAutocomplete">
+            @for (almacen of almacenesGroupOption | async ; track almacen) {
+                <mat-option [value]="almacen.whsCode">{{almacen.whsName}}</mat-option>
+              }
+         </mat-autocomplete>
+      </mat-form-field>
+      <div >
+        <button mat-mini-fab type="submit" (click)="submitForm()">
+          <mat-icon>search</mat-icon>
+        </button>
+      </div>
+      <div>
+        <button mat-mini-fab  color="primary" (click)="cleanForm()">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </div>      
+            </form>
+        </div>
+    </div>
+    <div class="p-2">
+        <div class="contenedor-tabla mat-elevation-z8 p-3">
+            <div class="grid">
+                <mat-form-field  class="col-6">
+                    <mat-label>Filtrar</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" placeholder="Filtrar" #input>
+                  </mat-form-field>
+            </div>
+            <table mat-table [dataSource]="TablaSeriales" matSort (matSortChange)="announceSortChange($event)" matSortDirection="desc"
+            id="tabla-damasco">
+                <ng-container matColumnDef="itemCode">
+                    <th mat-header-cell *matHeaderCellDef>Sku</th>
+                    <td mat-cell *matCellDef="let element">{{element.itemCode}}</td>
+                </ng-container>
+                <ng-container matColumnDef="itemName">
+                    <th mat-header-cell *matHeaderCellDef>Descripción</th>
+                    <td mat-cell *matCellDef="let element">{{element.itemName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="serialNumber">
+                    <th mat-header-cell *matHeaderCellDef>Serial</th>
+                    <td mat-cell *matCellDef="let element">{{element.serialNumber}}</td>serialNumber
+                </ng-container>
+                <ng-container matColumnDef="warehouseName">
+                    <th mat-header-cell *matHeaderCellDef>Almacén </th>
+                        <td mat-cell *matCellDef="let element">{{element.warehouseName}}</td>
+                    </ng-container>
+                <ng-container matColumnDef="warehouseCode">
+                    <th mat-header-cell *matHeaderCellDef>Almacén nombre</th>
+                    <td mat-cell *matCellDef="let element">{{element.warehouseCode}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="quantityProduct">
+                        <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+                        <td mat-cell *matCellDef="let element">{{element.quantityProduct}}</td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No hay datos que coincidan con "{{input.value}}"</td>
+          </tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+        </div>
+    </div>
+</div>
+<app-loader></app-loader>
