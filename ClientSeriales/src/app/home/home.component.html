@@ -1,0 +1,18 @@
+<div class="surface-section px-4 py-8 md:px-6 lg:px-8 text-center">
+    <div class="mb-3 font-bold text-3xl">
+        <span class="text-cyan-900">Seriales</span>
+    </div>
+    <div class="grid">
+        <div class="col-12 md:col-6 lg:col-3" *ngFor="let item of HomeListContents">
+            <mat-card >
+                <mat-card-content    [routerLink]= "item.url">
+                    <span  class="p-3 shadow-2 mb-3 inline-block surface-card" style="border-radius: 10px">
+                        <mat-icon>{{item.icon}}</mat-icon>
+            
+                    </span>
+                    <div class="text-900 text-xl mb-3 font-medium">{{item.label}}</div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>
